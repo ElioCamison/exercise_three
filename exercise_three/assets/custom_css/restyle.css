@@ -1,0 +1,26 @@
+body{
+    background-color: #1C2833;
+}
+
+.custom-dark{
+    background-color: #212F3D;
+}
+
+.navbar-brand{
+    color: #D2B4DE;
+}
+
+a{
+    color: #ffffff;
+}
+
+ a:hover, a:focus {
+    color: #A569BD;
+}
+
+footer{
+    background-color: #212F3D;
+    width: auto;
+    position: fixed;
+    color: white;
+}
