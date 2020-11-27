@@ -1,8 +1,8 @@
 <?php
 
-require '../classes/UserDbh.php';
+require '../connection/UserDbh.php';
 
-class User extends UserDbh
+class User extends Dbh
 {
 
     private $id;
@@ -96,6 +96,17 @@ class User extends UserDbh
     public function setEmail($email): void
     {
         $this->email = $email;
+    }
+
+
+    public function insert($user){
+        try {
+            $sql = "INSERT INTO user(userName, userPwd, userUid, userEmail) VALUES(?, ?, ?, ?);";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute([$user->getName(),$user->getPwd(),$user->getUsername(),$user->getEmail()]);
+        } catch (PDOException $exception) {
+            echo $exception->getMessage();
+        }
     }
 
 
