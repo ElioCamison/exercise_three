@@ -1,10 +1,32 @@
+<?php
+    require './connection/Dbh.php';
+    $conn = new Dbh();
+
+    if(isset( $_POST) && !empty($_POST)) {
+
+        $stmt = $conn->prepare("SELECT * FROM user WHERE userEmail = ? AND userPwd = ?");
+        $stmt->execute([addslashes($_POST['email']), addslashes($_POST['pwd']) ]);
+        $user = $stmt->fetch(PDO::FETCH_OBJ);
+
+        // En el login no se puede construir el obj, se debe devolver
+        // el objeto usuario en caso de que exista o en caso contrario
+        // se debe de enviar al formulario de registro
+        if($user){
+            session_start();
+            $_SESSION['user']=$user;
+
+            header("Location:http://localhost/practicas/des/exercise_three/includes/registered.php");
+        }
+
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <!-- BEGIN HEAD -->
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, user-scalable=no,
-        initial-scale=1.0, maxium-scale=1.0, minimum-scale=1.0">
+        <meta name="viewport" content="width=device-width, user-scalable=no">
         <title>DES | Ejercicio 3</title>
         <meta content="Elio Camisón Costa" name="author" />
         <meta content="Login" name="description" />
@@ -45,25 +67,29 @@
         </nav>
         <!-- END NAV -->
 
-
-
         <!-- BEGIN CONTAINER -->
         <div class="container-fluid h-100">
             <div class="row justify-content-center align-items-center h-100">
                 <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
                     <!-- BEGIN FORM -->
-                    <form class="login-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                    <form id="login-form" class="login-form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" novalidate>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
                             </div>
-                            <input class="form-control" type="text" name="user_id" placeholder="Email...">
+                            <input class="form-control" maxlength="150" type="text" name="email" autocomplete="email" placeholder="Email..." required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-lock"></i></span>
                             </div>
-                            <input class="form-control" type="password" name="pwd" placeholder="Contraseña...">
+                            <input class="form-control" type="password" name="pwd" autocomplete="current-password" placeholder="Contraseña..." required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
                         </div>
                         <button class="btn btn-primary custom_button" type="submit">Iniciar sesión</button>
                     </form>
@@ -83,3 +109,23 @@
     </body>
     <!-- END BODY -->
 </html>
+<script type="text/javascript">
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('login-form');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>

@@ -98,7 +98,6 @@ class User extends Dbh
         $this->email = $email;
     }
 
-
     public function insert($user){
         try {
             $sql = "INSERT INTO user(userName, userPwd, userUid, userEmail) VALUES(?, ?, ?, ?);";
@@ -108,6 +107,23 @@ class User extends Dbh
             echo $exception->getMessage();
         }
     }
+
+    public function update($user){
+
+    }
+
+    public function delete($user){
+
+    }
+
+    public function getUserById($user_id){
+
+    }
+
+    public function getAllUsers(){
+
+    }
+
 
 
 }
