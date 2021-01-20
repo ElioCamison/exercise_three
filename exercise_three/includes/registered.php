@@ -3,7 +3,7 @@
 session_start();
 require '../connection/Dbh.php';
 
-$conn = new Dbh();
+$conn = Dbh::getConnection();
 
 echo "<pre style='color: white'>";
 print_r($_SESSION['user']);

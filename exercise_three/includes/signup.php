@@ -21,7 +21,6 @@
 
         $user->setName($name);
         $user->setUsername($username);
-        //
         $user->setPwd(password_hash($pwd, PASSWORD_DEFAULT));
         $user->setEmail($email);
 

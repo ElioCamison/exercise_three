@@ -1,6 +1,7 @@
 <?php
     require './connection/Dbh.php';
-    $conn = new Dbh();
+    //Creamos una connexión con la base de datos
+    $conn = Dbh::getConnection();
 
     if(isset( $_POST) && !empty($_POST)) {
 
@@ -14,6 +15,8 @@
         if($user){
             session_start();
             $_SESSION['user']=$user;
+            //Cerramos la sesión de la base de datos
+            Dbh::closeConnection($conn);
 
             header("Location:http://localhost/practicas/des/exercise_three/includes/registered.php");
         }

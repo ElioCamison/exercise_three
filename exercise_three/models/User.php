@@ -10,6 +10,7 @@ class User extends Dbh
     private $username;
     private $pwd;
     private $email;
+    private $conn;
 
     /**
      * User constructor.
@@ -23,7 +24,12 @@ class User extends Dbh
         $this->name = $name;
         $this->username = $username;
         $this->pwd = $pwd;
+
+
+
         $this->email = $email;
+        // Encontrar un método mejor de hacer esto.
+        $this->conn = Dbh::getConnection();
     }
 
     /**
@@ -101,7 +107,7 @@ class User extends Dbh
     public function insert($user){
         try {
             $sql = "INSERT INTO user(userName, userPwd, userUid, userEmail) VALUES(?, ?, ?, ?);";
-            $stmt = $this->connect()->prepare($sql);
+            $stmt = $this->conn->prepare($sql);
             $stmt->execute([$user->getName(),$user->getPwd(),$user->getUsername(),$user->getEmail()]);
         } catch (PDOException $exception) {
             echo $exception->getMessage();
